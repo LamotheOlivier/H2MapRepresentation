@@ -25,11 +25,9 @@ class Main_frame(tb.Frame):
 
           # Canvas containing the image
           map = Image.open("OccitanieMap.jpg")              #A SUPPR
-          canvas = tb.Canvas(self, background= 'red')
-          canvas.pack( fill='both', expand=True)
-          canvas.bind('<Configure>', lambda event : resize_image(event, canvas, map))
-
-          self.pack(side='bottom', fill='both', expand = True)
+          self.canvas = tb.Canvas(self, background= 'red')
+          self.canvas.pack( fill='both', expand=True)
+          self.canvas.bind('<Configure>', lambda event : resize_image(event, self.canvas, map))
 
 class Map_data_frame(tb.Frame):
      def __init__(self, master):
@@ -101,6 +99,31 @@ class Map_data_frame(tb.Frame):
 
 # The class representing the interface itself
 class interface:
+
+     # def __change_frame(self):
+     #      print("wesh")
+     #      if self.current_frame == "main":
+     #           self.current_frame = "map"
+     #           self.map_data_frame.tkraise()
+     #      else:
+     #           self.current_frame = "main"
+     #           self.main_frame.tkraise()
+               
+     def __change_frame(self):
+          print("wesh")
+          if self.current_frame == "main":
+               self.current_frame = "map"
+               
+               self.map_data_frame = Map_data_frame(self.root)
+               self.map_data_frame.pack(side='bottom', fill=BOTH, expand=True)
+               self.main_frame.destroy()
+               
+          else:
+               self.current_frame = "main"
+               
+               self.main_frame = Main_frame(self.root)
+               self.main_frame.pack(side='bottom', fill=BOTH, expand=True)
+               self.map_data_frame.destroy()
      def __init__(self):
           #Launch the interface 
           self.root = tb.Window(themename="darkly")
@@ -109,17 +132,23 @@ class interface:
           #Button at the top
           top_frame = tb.Frame(self.root)
           top_frame.pack(side='top', fill='x')
-          self.import_button = tb.Button(top_frame, text="Importer des donnés")
+          self.import_button = tb.Button(top_frame, text="Importer des données")
           self.import_button.pack(side= 'left', padx=5)
-          self.map_button = tb.Button(top_frame, text="Changer la carte")
+          self.map_button = tb.Button(top_frame, text="Changer le traitement des données",
+                                      command= lambda : self.__change_frame())
           self.map_button.pack(side= 'left', padx=5)
+          self.download_image = tb.Button(top_frame, text="Télécharger les images")
+          self.download_image.pack(side= 'left', padx=5)
           self.parameter_button = tb.Button(top_frame, text="Paramètres")
-          self.parameter_button.pack(side= 'left', padx=5)
+          self.parameter_button.pack(side= 'right', padx=5)
 
-          # self.main_frame = Main_frame(self.root)
+
+          self.main_frame = Main_frame(self.root)
+          self.main_frame.pack(side='bottom', fill=BOTH, expand=True)
           self.map_data_frame = Map_data_frame(self.root)
 
-          self.map_data_frame.pack(side='bottom', fill='both', expand= True)
-
+          self.current_frame = "main"
+          
+          
           # Launch the interface
           self.root.mainloop()
