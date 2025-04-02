@@ -38,7 +38,7 @@ class Map_data_frame(tb.Frame):
 
           #slider frame
           bottom_frame = tb.Frame(self)
-          bottom_frame.pack(side='bottom', fill='x', padx=20)
+          bottom_frame.pack(side='bottom', fill='x', padx=20, pady = 5)
 
           self.download_map = tb.Button(bottom_frame, text="Télécharger les settings")
           self.download_map.pack(side='right', padx = 10)
@@ -46,8 +46,11 @@ class Map_data_frame(tb.Frame):
           self.import_map_b = tb.Button(bottom_frame, text="Importer les settings")
           self.import_map_b.pack(side='right', padx = 10)
 
+          self.save_modification = tb.Button(bottom_frame, text="Enregistrer les modifications")
+          self.save_modification.pack(side='right', padx = 10)
+
           top_frame = tb.Frame(self)
-          top_frame.pack(side='top', fill='both', padx=20) 
+          top_frame.pack(side='top', fill='both', padx=20, expand = True) 
 
           top_bot_frame = tb.Frame(top_frame)
           top_bot_frame.pack(side='bottom', fill='x', padx=20) 
@@ -84,11 +87,16 @@ class Map_data_frame(tb.Frame):
           self.entry_laps_menu['menu'] = inside_menu
 
 
+          top_left_frame = tb.Frame(top_frame)
+          top_left_frame.pack(side='left', fill='both', expand=True)
           # Canvas containing the image
           map = Image.open("OccitanieMap.jpg")              #A SUPPR
-          canvas = tb.Canvas(top_frame, background= 'red') 
-          canvas.pack(side='left', fill='both', expand=True)
+          canvas = tb.Canvas(top_left_frame, background= 'red') 
+          canvas.pack(side='top', fill='both', expand=True)
           canvas.bind('<Configure>', lambda event : resize_image(event, canvas, map))
+
+          self.import_map_image_button = tb.Button(top_left_frame, text="Changer l'image")
+          self.import_map_image_button.pack(side='bottom', pady = 10)
 
 
 # The class representing the interface itself
